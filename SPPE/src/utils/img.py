@@ -96,7 +96,7 @@ def drawGaussian(img, pt, sigma):
     x = np.arange(0, size, 1, float)
     y = x[:, np.newaxis]
     x0 = y0 = size // 2
-    sigma = size / 4.0    
+    sigma = size / 4.0
     # The gaussian is not normalized, we want the center value to equal 1
     g = np.exp(- ((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2))
 
@@ -242,8 +242,8 @@ def transformBoxInvert_batch(pt, ul, br, inpH, inpW, resH, resW):
 def cropBox(img, ul, br, resH, resW):
     ul = ul.int()
     br = br.int()
-    lenH = max(br[1] - ul[1], (br[0] - ul[0]) * resH / resW)
-    lenW = lenH * resW / resH
+    lenH = max(br[1] - ul[1], (br[0] - ul[0]) * torch.true_divide(resH, resW))
+    lenW = lenH * torch.true_divide(resW, resH)
     if img.dim() == 2:
         img = img[np.newaxis, :]
 
@@ -335,7 +335,7 @@ def drawMPII(inps, preds):
     fig = plt.figure()
     plt.imshow(imgs[0])
     ax = fig.add_subplot(1, 1, 1)
-    #print(preds.shape)
+    # print(preds.shape)
     for p in range(16):
         x, y = preds[0][p]
         cor = (round(x), round(y)), 10
@@ -363,7 +363,7 @@ def drawCOCO(inps, preds, scores):
     fig = plt.figure()
     plt.imshow(imgs[0])
     ax = fig.add_subplot(1, 1, 1)
-    #print(preds.shape)
+    # print(preds.shape)
     for p in range(17):
         if scores[0][p][0] < 0.2:
             continue
